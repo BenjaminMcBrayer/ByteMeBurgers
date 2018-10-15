@@ -10,7 +10,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class EmployeeMethods {
+/**
+ * @author benjamin.mcbrayer
+ *
+ */
+public class EmployeeFileMethods {
 
 	// Read from the managers text file to generate an ArrayList of managers (who
 	// will have permission to add/delete menu items and to add/delete employees).
@@ -42,34 +46,7 @@ public class EmployeeMethods {
 		return employees;
 	}
 
-	public static ArrayList<FoodItem> readFromFileToArrayListFoodItems() {
-		ArrayList<FoodItem> shoppingCart = new ArrayList<>();
-		Path readFile = Paths.get("CompanyInfo/Menu");
-
-		File file = readFile.toFile();
-
-		try {
-			FileReader fr = new FileReader(file);
-			BufferedReader reader = new BufferedReader(fr);
-
-			String line = reader.readLine();
-			String[] temp = new String[4];
-
-			while (line != null) {
-				temp = line.split("\t");
-				FoodItem f = new FoodItem(temp[0], temp[1], temp[2], 0);
-				shoppingCart.add(f);
-
-				line = reader.readLine();
-			}
-			reader.close();
-
-		} catch (IOException e) {
-			System.out.println("Something went wrong!");
-		}
-		return shoppingCart;
-	}
-
+	
 	// Search an ArrayList of employees to validate userID.
 	// In Main method, first assign String userInput = Validator.getString(scnr,
 	// "Please enter your User ID number: ");
@@ -86,9 +63,10 @@ public class EmployeeMethods {
 	}
 
 	// Boolean value above is in the if condition
-	// (m.getId().equalsIgnoreCase(userInput)). If that condition is true, the ID is
-	// validated. Below is a method that accomplishes the same thing, but returns a
-	// Boolean value.
+	// (e.getId().equalsIgnoreCase(userInput)).
+	// If that condition is true, the ID is validated.
+	// Below is a method that accomplishes the same thing, but returns a Boolean
+	// value.
 	public static boolean validateUserID2(String userInput, ArrayList<Employee> employees) {
 		HashSet<String> hs = new HashSet<String>();
 		for (Employee e : employees) {
@@ -101,20 +79,7 @@ public class EmployeeMethods {
 		}
 	}
 
-	// In main method, first assign userNum = Validator.getInt(scnr, "Please select
-	// an option (1, 2, or 3): ", 1, 3);
-	// if (userNum == 1) {
-	// Display current menu.
-	// }
-	// if (userNum == 2) {
-	// validate string. ask user to enter the name, category, description, and price
-	// of the new item (in that order, separated by a comma).
-	// call method addItemToMenu.
-	// }
-	// if (userNum == 3) {
-	// validate string. ask user to enter the name of the food item to remove (will
-	// this be enough to delete the whole line?).
-	// call method deleteFoodItem.
+	// Add food item.
 	public static void addItemToMenu(FoodItem newfoodItem) {
 
 		Path writeFile = Paths.get("CompanyInfo/Menu");
@@ -178,17 +143,6 @@ public class EmployeeMethods {
 			System.out.println(++i + ". " + e.getName());
 		}
 	}
-		
-	//Print out a list of food items.
-	public static void printFoodItems() {
-		ArrayList<FoodItem> foodItems = new ArrayList<>();
-		foodItems = readFromFileToArrayListFoodItems();
-		
-		for (FoodItem f : foodItems) {
-			System.out.println(f.getName());
-		}
-	}
-	
 
 	// Add employee to list.
 	public static void writeToFile(Employee employee) {
@@ -246,7 +200,3 @@ public class EmployeeMethods {
 	}
 
 }
-
-
-
-

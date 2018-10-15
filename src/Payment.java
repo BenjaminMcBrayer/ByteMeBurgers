@@ -1,38 +1,34 @@
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public abstract class Payment {
 
-	private double amount;
+	private Double amount;
 
 	public Payment() {
-
 	}
 
-	public Payment(double amount) {
+	public Payment(Double amount) {
 		this.amount = amount;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public static String calcPayment(double total) {
-		DecimalFormat format = new DecimalFormat("###.00");
-		String numberAsString = format.format(total);
-		return numberAsString;
-		
-	}
+	public abstract boolean acceptPayment();
 
-	public abstract void getPayment();
+	public String formatAmount(Double amount) {
+		DecimalFormat format = new DecimalFormat("###.00");
+		String numberAsString = format.format(amount);
+		return numberAsString;	
+	}
 
 	@Override
 	public String toString() {
-		return "Please pay: $" + amount;
+		return "Please pay $" + formatAmount(amount);
 	}
-
 }

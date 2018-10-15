@@ -1,108 +1,150 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * @author allison.farr; edited by benjamin.mcbrayer
+ *
+ */
 public class CreditCardPayment extends Payment {
+	private Scanner scnr;
 
 	private String cardNumber;
-	private String expiration;
+	private String expiry;
 	private String cvv;
+	private String cardCompany;
 
 	public CreditCardPayment() {
-		super();
-
-	}
-
-	public CreditCardPayment(String cardNumber, String expiration, String cvv) {
-		super();
-		this.cardNumber = cardNumber;
-		this.expiration = expiration;
-		this.cvv = cvv;
+		scnr = new Scanner(System.in);
 	}
 
 	public CreditCardPayment(double amount) {
 		super(amount);
+	}
 
+	public CreditCardPayment(Double amount, String cardNumber, String expiry, String cvv) {
+		super(amount);
+		this.cardNumber = cardNumber;
+		this.expiry = expiry;
+		this.cvv = cvv;
 	}
 
 	public String getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(Scanner scan, String cardNumber) {
-
-		// Regex validating for credit card number
-
-		boolean isValid = false;
-		while (isValid == false) {
-
-			if (cardNumber.matches("\\d{13,16}")) {
-				this.cardNumber = cardNumber;
-				isValid = true;
-			} else {
-				System.out.println(cardNumber + " is not a valid credit card number.");
-				cardNumber = Validator.getString(scan, "Please enter a valid credit card number: ");
-
-			}
-		}
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = Long.toString(Validator.getLong(scnr, "Please, enter the card number: "));
 	}
 
-	public String getExpiration() {
-		return expiration;
+	public String getExpiry() {
+		return expiry;
 	}
 
-	public void setExpiration(Scanner scan, String expiration) {
-
-		// Regex validating for expiration date
-
-		boolean isValid = false;
-
-		while (isValid == false) {
-			if (expiration.matches("\\d{2}/\\d{2}")) {
-				this.expiration = expiration;
-				isValid = true;
-			} else {
-				System.out.println(expiration + " is not a valid expiration date.");
-				expiration = Validator.getString(scan, "Please enter a valid expiration date: ");
-
-			}
-		}
+	public void setExpiry(String expiry) {
+		this.expiry = Validator.getString(scnr, "Please, enter the expiration date: ");
 	}
 
 	public String getCvv() {
 		return cvv;
 	}
 
-	public void setCvv(Scanner scan, String cvv) {
+	public void setCvv(String cvv) {
+		this.cvv = Integer.toString(Validator.getInt(scnr, "Please, enter the security code: "));
+	}
 
-		// Regex validating for CVV number
+	/**
+	 * @return the cardCompany
+	 */
+	public String getCardCompany() {
+		return cardCompany;
+	}
 
-		boolean isValid = false;
-
-		while (isValid == false) {
-			if (cvv.matches("\\d{3,4}")) {
-				this.cvv = cvv;
-				isValid = true;
-			} else {
-				System.out.println(cvv + " is not a valid CVV number.");
-				cvv = Validator.getString(scan, "Please enter a valid CVV: ");
-			}
-		}
-
+	/**
+	 * @param cardCompany the cardCompany to set
+	 */
+	public void setCardCompany(String cardCompany) {
+		this.cardCompany = cardCompany;
 	}
 
 	@Override
-	public void getPayment() {
-		Scanner scan = new Scanner(System.in);
+	public boolean acceptPayment() {
+		CreditCardPayment creditCardPayment = new CreditCardPayment();
+		creditCardPayment.setCardNumber(cardNumber);
+		creditCardPayment.setCvv(cvv);
+		creditCardPayment.setExpiry(expiry);
+		String cardCompany = CreditCard.getMatchingCreditCard(cardNumber, cvv);
+		if (cardCompany != null) {
+			if (isValidLuhn(cardNumber)) {
+				if (isValidDate(expiry)) {
+					return true;
+				}
+			}
+			System.out.println("Payment method: " + cardCompany + ".\nApproved.");
+		} else {
+			System.out.println("This is not a valid card");
+			return false;
+		}
+		return false;
+	}
 
-		CreditCardPayment test = new CreditCardPayment();
+	/**
+	 * @param String cardNumber
+	 * @return boolean
+	 */
+	// Luhn algorithm.
+	public static boolean isValidLuhn(String cardNumber) {
+		int cardSum = 0;
+		int i;
+		int digit = 0;
+		boolean isValid = false;
 
-		String cc = Validator.getString(scan, "Please enter your credit card number (numbers only - no dashes): ");
-		test.setCardNumber(scan, cc);
+		String[] digits = cardNumber.split("");
+		for (i = 0; i < digits.length; i++) {
 
-		String expiration = Validator.getString(scan, "Please enter expiration date (MM/YY): ");
-		test.setExpiration(scan, expiration);
+			// Getting numbers in reverse order.
+			digit = Integer.parseInt(digits[digits.length - i - 1]);
 
-		String cvv = Validator.getString(scan, "Please enter the CVV number found on the back of the card: ");
-		test.setCvv(scan, cvv);
+			// Multiply by 2 if odd.
+			if (i % 2 == 1) {
+				digit *= 2;
+
+				// If sum has 2 digits, subtract 9.
+				if (digit > 9) {
+					digit = digit - 9;
+				}
+			}
+			cardSum += digit;
+		}
+
+		// To be valid, the sum of the digits must be divisible by 10.
+		if (cardSum % 10 == 0) {
+			isValid = true;
+		}
+		return isValid;
+	}
+
+	/**
+	 * @param String expirationDate
+	 * @return boolean
+	 */
+	public static boolean isValidDate(String expirationDate) {
+		boolean isValid = false;
+
+		// Separate user input into month and year.
+		String[] date = expirationDate.split("/");
+		int userMonth = Integer.parseInt(date[0]);
+		int userYear = Integer.parseInt(date[1]);
+
+		// Get current month and year.
+		LocalDate todaysDate = LocalDate.now();
+		int monthNow = todaysDate.getMonthValue();
+		String fullYearNow = Integer.toString(todaysDate.getYear());
+		int yearNow = Integer.parseInt(fullYearNow.substring(2, 4));
+
+		if (userYear >= yearNow && userMonth >= monthNow) {
+			isValid = true;
+		}
+		return isValid;
 	}
 
 }

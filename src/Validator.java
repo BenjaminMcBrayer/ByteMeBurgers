@@ -69,4 +69,20 @@ public class Validator {
 		}
 		return d;
 	}
+
+	public static long getLong(Scanner sc, String prompt) {
+		long l = 0;
+		boolean isValid = false;
+		while (isValid == false) {
+			System.out.print(prompt);
+			if (sc.hasNextLong()) {
+				l = sc.nextLong();
+				isValid = true;
+			} else {
+				System.out.println("Error! Invalid entry. Try again.");
+			}
+			sc.nextLine(); // discard any other data entered on the line
+		}
+		return l;
+	}
 }

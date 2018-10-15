@@ -1,9 +1,15 @@
+/**
+ * @author benjamin.mcbrayer
+ *
+ */
 public class Employee {
 	private String userID;
 	private String name;
 
+	public Employee() {
+	}
+
 	public Employee(String id, String name) {
-		super();
 		this.userID = id;
 		this.name = name;
 	}
@@ -27,7 +33,4 @@ public class Employee {
 	public String toString() {
 		return userID + "," + name;
 	}
-
-
-	
 }

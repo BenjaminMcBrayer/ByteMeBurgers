@@ -1,87 +1,52 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @authors allison.farr, anthony.reakoff, benjamin.mcbrayer, and mike.decoopman
+ *
+ */
 public class CustomerInterface {
 
 	public static void main(String[] args) {
-		// object instences created here
+		// Declare and initialize variables.
+		Scanner scnr = new Scanner(System.in);
 		ArrayList<Employee> empList = new ArrayList<>();
 		ArrayList<FoodItem> cart = new ArrayList<>();
 		ArrayList<FoodItem> menu = new ArrayList<>();
-		Scanner scnr = new Scanner(System.in);
-
-		// all variables initialized here
-		String ans;
-		int num;
-		int item;
-		double total = 0;
-		String newEmp;
-		String idNum;
-		boolean idPass;
+		Payment payment = null;
+		String ans = null;
+		String foodName = null;
+		String category = null;
+		String description = null;
+		int choice = 0;
+		int num = 0;
+		int item = 0;
 		int passTry = 4;
-		String foodName;
-		String cat;
-		String description;
-		double price;
-		double tax;
+		double subtotal = 0.0;
+		double total = 0.0;
+		double price = 0.0;
+		boolean idPass = false;
 
-		//this allows user to view menu, or if an employee, they can view admin or manager functions here
-		System.out.println("Welcome to Byte Me Burgers!");
-		System.out.println();
-		ans = Validator.getString(scnr, "Hit enter to view our menu ");
-		System.out.println();
+		System.out.println("Welcome to Byte Me Burgers!\n");
+		ans = Validator.getString(scnr, "Hit enter to view our menu.\n");
+
+		// Administrator functions.
 		if (ans.equalsIgnoreCase("admin")) {
-			ans = Validator.getString(scnr, "Please enter password to access admin privileges: ");
-			System.out.println();
+			ans = Validator.getString(scnr, "Please enter password to access admin privileges: \n");
 			if (ans.equalsIgnoreCase("beefaroni")) {
-				System.out.println("Welcome to the management database!");
+				System.out.println("Welcome to the employee database!");
 				do {
-					ans = Validator.getString(scnr,
-							"How would you like to modify management permissions? add/delete/exit: ");
-					if (ans.equalsIgnoreCase("add")) {
-						do {
-							newEmp = Validator.getString(scnr, "Enter name of new manager: ");
-							idNum = Validator.getString(scnr, "Enter ID number for new manager: ");
-							Employee e1 = new Employee(idNum, newEmp);
-							EmployeeMethods.writeToFile(e1);
-							System.out.println();
-							EmployeeMethods.printEmployeeList();
-							ans = Validator.getString(scnr, newEmp
-									+ " has been given management permissions. Would you like to add another manager? y/n ");
-						} while (ans.equalsIgnoreCase("y"));
-						System.out.println("Exiting program.");
-					} else if (ans.equalsIgnoreCase("delete")) {
-						empList = EmployeeMethods.readFromFileToArrayList();
-						EmployeeMethods.printEmployeeList();
-						do {
-							System.out.println();
-							ans = Validator.getString(scnr, "Which manager would you like to remove? ");
-							EmployeeMethods.deleteEmployeeFromFile(ans);
-							System.out.println();
-							System.out.println("Updated manager list:");
-							EmployeeMethods.printEmployeeList();							
-							System.out.println();
-							ans = Validator.getString(scnr, "Would you like to delete another manager? y/n ");
-						} while (ans.equalsIgnoreCase("y"));
-						System.out.println("Exiting program.");
-					} else if (ans.equalsIgnoreCase("exit")) {
-						System.out.println("Exiting program.");
-					} else {
-						System.out.println("Please select valid answer, or 'exit' to terminate program.");
-						System.out.println();
-						ans = "1";
-					}
+					ans = modifyAdminAccess(scnr);
 				} while (ans.equalsIgnoreCase("1"));
-
 			} else
 				System.out.println("Password invalid. Exiting program.");
 
-			//manager function to allow manager to add/delete items
+			// Management functions (ability to add/delete items).
 		} else if (ans.equalsIgnoreCase("manager")) {
-			empList = EmployeeMethods.readFromFileToArrayList();
+			empList = EmployeeFileMethods.readFromFileToArrayList();
 			do {
 				ans = Validator.getString(scnr, "Please verify ID number: ");
-				idPass = EmployeeMethods.validateUserID2(ans, empList);
+				idPass = EmployeeFileMethods.validateUserID2(ans, empList);
 				if (idPass == true) {
 					do {
 						ans = Validator.getString(scnr, "How would you like to adjust the menu? add/delete/exit: ");
@@ -89,18 +54,20 @@ public class CustomerInterface {
 							System.out.println("Current menu:");
 							System.out.println("=============");
 							do {
-								EmployeeMethods.printFoodItems();
-						
+								FoodItemFileMethods.printFoodItems();
 								System.out.println();
-								foodName = Validator.getString(scnr, "What is the name of the new menu item? (Include item number and tab after): ");
-								cat = Validator.getString(scnr, "New item category (include tab after): ");
-								description = Validator.getString(scnr, "Brief description of item (include tab after): ");
-								price = Validator.getDouble(scnr, "Price of new item (no comma): ", 0, Double.MAX_VALUE);
-								FoodItem f = new FoodItem(foodName, cat, description, price);
-								EmployeeMethods.addItemToMenu(f);
+								foodName = Validator.getString(scnr,
+										"What is the name of the new menu item? (Include item number and tab after): ");
+								category = Validator.getString(scnr, "New item category (include tab after): ");
+								description = Validator.getString(scnr,
+										"Brief description of item (include tab after): ");
+								price = Validator.getDouble(scnr, "Price of new item (no comma): ", 0,
+										Double.MAX_VALUE);
+								FoodItem f = new FoodItem(foodName, category, description, price);
+								EmployeeFileMethods.addItemToMenu(f);
 								System.out.println();
 								System.out.println("Updated menu:");
-								EmployeeMethods.printFoodItems();
+								FoodItemFileMethods.printFoodItems();
 								System.out.println();
 								ans = Validator.getString(scnr, "Would you like to add another item? y/n: ");
 							} while (ans.equalsIgnoreCase("y"));
@@ -109,13 +76,13 @@ public class CustomerInterface {
 						} else if (ans.equalsIgnoreCase("delete")) {
 							System.out.println("Current menu:");
 							System.out.println("=============");
-							EmployeeMethods.printFoodItems();
+							FoodItemFileMethods.printFoodItems();
 							do {
 								System.out.println();
 								ans = Validator.getString(scnr, "Which item would you like to delete? ");
-								EmployeeMethods.deleteItemFromMenu(ans);
+								EmployeeFileMethods.deleteItemFromMenu(ans);
 								System.out.println("Updated menu:");
-								EmployeeMethods.printFoodItems();
+								FoodItemFileMethods.printFoodItems();
 								ans = Validator.getString(scnr, "Would you like to delete another item? y/n: ");
 							} while (ans.equalsIgnoreCase("y"));
 							System.out.println("Exiting program.");
@@ -127,7 +94,7 @@ public class CustomerInterface {
 							System.out.println();
 							ans = "2";
 						}
-						//giving user 3 tries to enter the correct password (security protocol)
+						// giving user 3 tries to enter the correct password (security protocol)
 					} while (ans.equalsIgnoreCase("2"));
 					passTry = 0;
 				} else {
@@ -148,13 +115,13 @@ public class CustomerInterface {
 
 		} else {
 			do {
-				
-			menu = FileMethods.readFromFile2();
-				FileMethods.displayMenu(menu);
+
+				menu = FoodItemFileMethods.readFromFile2();
+				FoodItemFileMethods.displayMenu(menu);
 				item = Validator.getInt(scnr, "Enter number of item would you like to order: ", 1, menu.size());
-				num = Validator.getInt(scnr, "How many orders?: ", 1,
-						Integer.MAX_VALUE);
-				ans = Validator.getString(scnr, "You selected " + num + " " + menu.get(item - 1).getName() + "(s). Add item(s) to cart? y/n ");
+				num = Validator.getInt(scnr, "How many orders?: ", 1, Integer.MAX_VALUE);
+				ans = Validator.getString(scnr,
+						"You selected " + num + " " + menu.get(item - 1).getName() + "(s). Add item(s) to cart? y/n ");
 				if (ans.equalsIgnoreCase("y")) {
 					System.out.println(num + " " + menu.get((item - 1)).getName() + "(s) added to cart");
 					cart.add(menu.get((item - 1)));
@@ -166,38 +133,121 @@ public class CustomerInterface {
 			System.out.println();
 			for (int i = 0; i < cart.size(); i++) {
 				System.out.println(cart.get(i).getName() + "    " + cart.get(i).getPrice());
-				total += cart.get(i).getPrice();
+				subtotal += cart.get(i).getPrice();
 			}
-			//calculates total
-			System.out.println("Subtotal: " + Payment.calcPayment(total));
-			tax = total * 0.06;
-			System.out.println("Tax: " + Payment.calcPayment(tax));
-			total += tax;
-			System.out.println("Grand total: " + Payment.calcPayment(total));
-			System.out.println();
+			// Calculate total.
+			total = calculateTotal(subtotal);
+			// Request payment.
 			do {
-				System.out.println("Please select method of payment:");
-				System.out.println("1. Cash");
-				System.out.println("2. Card");
-				System.out.println("3. Check");
-				ans = Validator.getString(scnr, " ");
-				if (ans.equalsIgnoreCase("1")) {
-					CashPayment.getPayment(total);
-				} else if (ans.equalsIgnoreCase("2")) {
-					Payment p = new CreditCardPayment();
-					p.getPayment();
-				} else if (ans.equalsIgnoreCase("3")) {
-					Payment p = new CheckPayment();
-					p.getPayment();
-				} else {
-					System.out.println("Invalid entry. Please enter valid entry.");
-				}
-			} while (((ans.equalsIgnoreCase("1")) || (ans.equalsIgnoreCase("2")) || (ans.equalsIgnoreCase("3"))) == false);
-			System.out.println();
+				choice = choosePaymentMethod(scnr, payment, total);
+			} while ((choice == 1 || choice == 2 || choice == 3) == false);
 			System.out.println(
 					"Thank you for your payment! Your order has been sent to the kitchen. Your name will be called shortly. Have a great day!");
 		}
 
+	}
+
+	/**
+	 * @param scnr
+	 * @return
+	 */
+	private static String modifyAdminAccess(Scanner scnr) {
+		String ans;
+		ans = Validator.getString(scnr, "How would you like to modify management permissions? Add/Delete/Exit: ");
+		if (ans.equalsIgnoreCase("add")) {
+			do {
+				ans = grantAdminAccess(scnr);
+			} while (ans.equalsIgnoreCase("y"));
+			System.out.println("Exiting program.");
+		} else if (ans.equalsIgnoreCase("delete")) {
+			EmployeeFileMethods.printEmployeeList();
+			do {
+				ans = revokeAdminAccess(scnr);
+			} while (ans.equalsIgnoreCase("y"));
+			System.out.println("Exiting program.");
+		} else if (ans.equalsIgnoreCase("exit")) {
+			System.out.println("Exiting program.");
+		} else {
+			System.out.println("Please select valid answer, or 'exit' to terminate program.\n");
+			ans = "1";
+		}
+		return ans;
+	}
+
+	/**
+	 * @param scnr
+	 * @return
+	 */
+	private static String revokeAdminAccess(Scanner scnr) {
+		String ans;
+		System.out.println();
+		ans = Validator.getString(scnr, "Which manager would you like to remove? ");
+		EmployeeFileMethods.deleteEmployeeFromFile(ans);
+		System.out.println();
+		System.out.println("Updated manager list:");
+		EmployeeFileMethods.printEmployeeList();
+		System.out.println();
+		ans = Validator.getString(scnr, "Would you like to delete another manager? y/n ");
+		return ans;
+	}
+
+	/**
+	 * @param scnr
+	 * @return
+	 */
+	private static String grantAdminAccess(Scanner scnr) {
+		String ans;
+		String newEmp;
+		String idNum;
+		newEmp = Validator.getString(scnr, "Enter name of new manager: ");
+		idNum = Validator.getString(scnr, "Enter ID number for new manager: ");
+		Employee e1 = new Employee(idNum, newEmp);
+		EmployeeFileMethods.writeToFile(e1);
+		System.out.println();
+		EmployeeFileMethods.printEmployeeList();
+		ans = Validator.getString(scnr,
+				newEmp + " has been given management permissions. Would you like to add another manager? y/n ");
+		return ans;
+	}
+
+	/**
+	 * @param payment
+	 * @param subtotal
+	 * @return
+	 */
+	private static double calculateTotal(double subtotal) {
+		double total;
+		double tax;
+		System.out.println("Subtotal: " + subtotal);
+		tax = subtotal * 0.06;
+		System.out.println("Tax: " + tax);
+		total = subtotal + tax;
+		System.out.println("Grand total: " + total + "\n");
+		return total;
+	}
+
+	/**
+	 * @param scnr
+	 * @param payment
+	 * @param total
+	 * @return
+	 */
+	static int choosePaymentMethod(Scanner scnr, Payment payment, double total) {
+		int choice;
+		choice = Validator.getInt(scnr, "Please select method of payment:\n1. Cash\n2. Card\n3. Check");
+		if (choice == 1) {
+			payment = new CashPayment();
+			payment.acceptPayment();
+		} else if (choice == 2) {
+			payment = new CreditCardPayment();
+			payment.acceptPayment();
+		} else if (choice == 3) {
+			payment = new CheckPayment();
+			payment.acceptPayment();
+		} else {
+			System.out.println("Invalid entry. Please enter 1, 2, or 3.");
+		}
+		return choice;
 	}
 
 }
