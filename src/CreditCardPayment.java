@@ -66,6 +66,9 @@ public class CreditCardPayment extends Payment {
 		this.cardCompany = cardCompany;
 	}
 
+	/* (non-Javadoc)
+	 * @see Payment#acceptPayment()
+	 */
 	@Override
 	public boolean acceptPayment() {
 		CreditCardPayment creditCardPayment = new CreditCardPayment();

@@ -21,7 +21,7 @@ public abstract class Payment {
 
 	public abstract boolean acceptPayment();
 
-	public String formatAmount(Double amount) {
+	public static String formatAmount(Double amount) {
 		DecimalFormat format = new DecimalFormat("###.00");
 		String numberAsString = format.format(amount);
 		return numberAsString;	
