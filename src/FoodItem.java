@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-
 /**
- * @author MikeDetroit
+ * @author mike.decoopman
  *
  */
 public class FoodItem {
@@ -52,8 +50,15 @@ public class FoodItem {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	
+	public String getFormattedPrice() {
+		return formatNumber(getPrice());
+	}
 
-	public static ArrayList<FoodItem> createMenu() {
+	public static String formatNumber(double x) {
+		return String.format("%.2f", x);
+	}
+	/*public static ArrayList<FoodItem> createMenu() {
 		ArrayList<FoodItem> foodItems = new ArrayList<>();
 		foodItems.add(new FoodItem("Byte Me Burger", "Burgers",
 				"Angus Beef Patty, Cheese, Lettuce, Pickles, Special Byte Sauce.", 6.99));
@@ -86,7 +91,7 @@ public class FoodItem {
 		foodItems.add(new FoodItem("Double Byte Me Burger", "Burgers",
 				"2 HUGE Angus Beef Patties, Cheese, Lettuce, Pickles, Special Byte Sauce.", 9.99));
 		return foodItems;
-	}
+	}*/
 
 	@Override
 	public String toString() {

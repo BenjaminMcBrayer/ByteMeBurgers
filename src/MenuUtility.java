@@ -9,13 +9,51 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-/**
- * @authors mike.decoopman; edited by benjamin.mcbrayer
- *
- */
-public class FoodItemFileMethods {
+public class MenuUtility {
 
-	public static ArrayList<FoodItem> readFromFile2() {
+	/**
+	 * @param foodItems
+	 */
+	public static void displayMenu(ArrayList<FoodItem> foodItems) {
+
+		System.out.println("                            Welcome to the Byte Me Burger Menu!");
+		System.out.println(
+				"\n=============================================================================================");
+		for (int i = 0; i < foodItems.size(); ++i) {
+
+			System.out.println("    Name:         " + foodItems.get(i).getName());
+			System.out.println("    Category:     " + foodItems.get(i).getCategory());
+			System.out.println("    Description:  " + foodItems.get(i).getDescription());
+			System.out.println("    Price:        " + foodItems.get(i).getPrice());
+			System.out.println();
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	public static ArrayList<FoodItem> generateCurrentMenu() {
+		ArrayList<FoodItem> menu;
+		menu = readFromFile();
+		displayMenu(menu);
+		return menu;
+	}
+/**
+	 * @param cart
+	 * @param menu
+	 * @param num
+	 * @param item
+	 */
+	public static void addItemToOrder(ArrayList<FoodItem> cart, ArrayList<FoodItem> menu, int num, int item) {
+		System.out.println(num + " " + menu.get((item - 1)).getName() + "(s) added to cart");
+		cart.add(menu.get((item - 1)));
+		cart.get((cart.size() - 1)).setPrice((cart.get((cart.size() - 1)).getPrice() * num));
+	}
+	
+	/**
+	 * @return
+	 */
+	public static ArrayList<FoodItem> readFromFile() {
 		Path read = Paths.get("CompanyInfo/Menu");
 		File file = read.toFile();
 		ArrayList<FoodItem> foodItems = new ArrayList<>();
@@ -41,7 +79,10 @@ public class FoodItemFileMethods {
 		return foodItems;
 	}
 
-	public static ArrayList<FoodItem> readFromFileToArrayListFoodItems() {
+	/**
+	 * @return
+	 */
+	public static ArrayList<FoodItem> readFromFileToArrayListOfFoodItems() {
 		ArrayList<FoodItem> shoppingCart = new ArrayList<>();
 		Path readFile = Paths.get("CompanyInfo/Menu");
 
@@ -71,22 +112,22 @@ public class FoodItemFileMethods {
 	// Print out a list of food items.
 	public static void printFoodItems() {
 		ArrayList<FoodItem> foodItems = new ArrayList<>();
-		foodItems = readFromFileToArrayListFoodItems();
+		foodItems = readFromFileToArrayListOfFoodItems();
 
 		for (FoodItem f : foodItems) {
 			System.out.println(f.getName());
 		}
 	}
 
-	public static void addToFile(String fileName, ArrayList<FoodItem> foodItems) {
+	/*public static void addToFile(String fileName, ArrayList<FoodItem> foodItems) {
 		ArrayList<FoodItem> data = readFromFile2();
 		data.addAll(foodItems);
 		writeToFile(fileName, data);
 
 		return;
-	}
+	}*/
 
-	private static void writeToFile(String fileName, ArrayList<FoodItem> data) {
+	public static void writeToFile(String fileName, ArrayList<FoodItem> data) {
 		Path writeFile = Paths.get(fileName);
 		File file = writeFile.toFile();
 
@@ -103,32 +144,17 @@ public class FoodItemFileMethods {
 		}
 	}
 
-	public static void displayMenu(ArrayList<FoodItem> foodItems) {
-
-		System.out.println("                            Welcome to the Byte Me Burger Menu!");
-		System.out.println(
-				"\n=============================================================================================");
-		for (int i = 0; i < foodItems.size(); ++i) {
-
-			System.out.println("    Name:         " + foodItems.get(i).getName());
-			System.out.println("    Category:     " + foodItems.get(i).getCategory());
-			System.out.println("    Description:  " + foodItems.get(i).getDescription());
-			System.out.println("    Price:        " + foodItems.get(i).getPrice());
-			System.out.println();
-		}
-	}
-
-	public static ArrayList<FoodItem> addItem(String fileName, FoodItem item) {
-		ArrayList<FoodItem> temp = FoodItemFileMethods.readFromFile2();
+	/*public static ArrayList<FoodItem> addItem(String fileName, FoodItem item) {
+		ArrayList<FoodItem> temp = readFromFile2();
 		temp.add(item);
 		return temp;
 
-	} // end of 2nd method
+	}*/ // end of 2nd method
 		// void does not return a value (I'm doing something, but not getting anything
 		// back
 
-	public static void addMenu(String fileName, ArrayList<FoodItem> foodItems) {
-		FoodItemFileMethods.addToFile(fileName, foodItems); // No left side because not returning any value
+	/*public static void addMenu(String fileName, ArrayList<FoodItem> foodItems) {
+		addToFile(fileName, foodItems); // No left side because not returning any value
 		return; // not returning any value
-	}
+	}*/
 }

@@ -36,7 +36,7 @@ public class CashPayment extends Payment {
 		if (total > cash) {
 			total -= cash;
 			System.out.println("You still owe " + total + ". How would you like to pay for the remainder?");
-			TerminalInterface.choosePaymentMethod(scnr, payment, total);
+			PaymentUtility.choosePaymentMethod(scnr, payment, total);
 			return false;
 		} else if (total < cash) {
 			System.out.println("Thank you! Your change is $" + getChange(cash, total));

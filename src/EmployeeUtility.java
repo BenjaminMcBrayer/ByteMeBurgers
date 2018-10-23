@@ -14,10 +14,12 @@ import java.util.HashSet;
  * @author benjamin.mcbrayer
  *
  */
-public class EmployeeFileMethods {
+public class EmployeeUtility {
 
-	// Read from the managers text file to generate an ArrayList of managers (who
-	// will have permission to add/delete menu items and to add/delete employees).
+	/*
+	 * Read from the managers text file to generate an ArrayList of managers (who
+	 * will have permission to add/delete menu items and to add/delete employees).
+	 */
 	public static ArrayList<Employee> readFromFileToArrayList() {
 		ArrayList<Employee> employees = new ArrayList<>();
 		Path readFile = Paths.get("CompanyInfo/Employees");
@@ -46,28 +48,7 @@ public class EmployeeFileMethods {
 		return employees;
 	}
 
-	
-	// Search an ArrayList of employees to validate userID.
-	// In Main method, first assign String userInput = Validator.getString(scnr,
-	// "Please enter your User ID number: ");
-	public static void validateUserID(String userInput, ArrayList<Employee> employees) {
-		for (Employee e : employees) {
-			if (e.getId().equalsIgnoreCase(userInput)) {
-				System.out.println("Welcome, " + e.getName() + "!");
-				System.out.println(
-						"\nOPTIONS\n1 - View the current menu\n2 - Add an item to the menu\n3 - Remove an item from the menu");
-			} else {
-				System.out.println("ID not recognized. Please try again.");
-			}
-		}
-	}
-
-	// Boolean value above is in the if condition
-	// (e.getId().equalsIgnoreCase(userInput)).
-	// If that condition is true, the ID is validated.
-	// Below is a method that accomplishes the same thing, but returns a Boolean
-	// value.
-	public static boolean validateUserID2(String userInput, ArrayList<Employee> employees) {
+	public static boolean validateUserID(String userInput, ArrayList<Employee> employees) {
 		HashSet<String> hs = new HashSet<String>();
 		for (Employee e : employees) {
 			hs.add(e.getId());
