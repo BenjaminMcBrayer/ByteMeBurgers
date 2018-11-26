@@ -1,10 +1,10 @@
-#1	Byte Me Burger	Burgers	Angus Beef Patty, Cheese, Lettuce, Pickles, Special Byte Sauce.	 6.99
-#2	Binary Burger	Burgers	Angus Beef Patty, Cheese, Lettuce, Tomato, Onion, Pickles, Mustard, Mayo, Ketchup, Brioche Bun	 5.99
-#3	Short Burger	Burgers	Small Patty, Mustard, Ketchup, Pickles	 3.99
-#4	Decimal Burger	Burgers	Angus Patty, Swiss Cheese, Grilled Onions, Mushrooms	 3.99
-#5	Chirpus Burger	Burgers	Chicken Breast, Lettuce, Mayo, Pickles, Brioche Buns	 7.99
-#6	CharAt(0) Burger	Burgers	Flame Broiled Patty, Cheese, Lettuce, Tomato, Onion, Pickles, Mustard, Mayo, Ketchup, Brioche Bun	 6.99
-#7	Binary Fries	Sides	Hand Cut Fries Shaped Like Binary 1's	 2.99
-#8	Binary Rings	Sides	Hand Cut Onion Rings Shaped Like Binary O's	 3.99
-#9	String Cheesesticks	Sides	Deep Fried Mozzarella Cheesesticks with Ranch or Marinara	 5.99
-#10	Sys Out Salad	Salads	Greens, Chicken Breast, Cheddar, Bacon, Choice of Dressing	 9.99
+1	Byte Me Burger	Burgers	Angus Beef Patty, Cheese, Lettuce, Pickles, Special Byte Sauce	6.99
+2	Binary Burger	Burgers	Angus Beef Patty, Cheese, Lettuce, Tomato, Onion, Pickles, Mustard, Mayo, Ketchup, Brioche Bun	5.99
+3	Short Burger	Burgers	Small Patty, Mustard, Ketchup, Pickles	 3.99
+4	Decimal Burger	Burgers	Angus Patty, Swiss Cheese, Grilled Onions, Mushrooms	 3.99
+5	Chirpus Burger	Burgers	Chicken Breast, Lettuce, Mayo, Pickles, Brioche Buns	 7.99
+6	CharAt(0) Burger	Burgers	Flame Broiled Patty, Cheese, Lettuce, Tomato, Onion, Pickles, Mustard, Mayo, Ketchup, Brioche Bun	 6.99
+7	Binary Fries	Sides	Hand Cut Fries Shaped Like Binary 1's	 2.99
+8	Binary Rings	Sides	Hand Cut Onion Rings Shaped Like Binary O's	 3.99
+9	String Cheesesticks	Sides	Deep Fried Mozzarella Cheesesticks with Ranch or Marinara	 5.99
+10	Sys Out Salad	Salads	Greens, Chicken Breast, Cheddar, Bacon, Choice of Dressing	 9.99

@@ -1,5 +1,12 @@
+package utility;
 import java.util.Scanner;
 
+import payment.Employee;
+
+/**
+ * @author benjamin.mcbrayer
+ *
+ */
 public class AdministratorUtility {
 	/**
 	 * @param scnr
@@ -10,18 +17,28 @@ public class AdministratorUtility {
 		do {
 			ans = Validator.getString(scnr,
 					"How would you like to modify management permissions? \n1. Grant \n2. Revoke \n3. Exit\n");
-			if (ans.equals("1")) {
-				grantAccess(scnr);
-			} else if (ans.equals("2")) {
-				revokeAccess(scnr);
-			} else if (ans.equals("3")) {
-				System.out.println("Exiting program.");
-				ans = "-1";
-			} else {
-				System.out.println("Please select a valid option.\n");
-				ans = "-1";
-			}
+			ans = chooseOption(scnr, ans);
 		} while (!(ans.equals("-1")));
+		return ans;
+	}
+
+	/**
+	 * @param scnr
+	 * @param ans
+	 * @return
+	 */
+	private static String chooseOption(Scanner scnr, String ans) {
+		if (ans.equals("1")) {
+			grantAccess(scnr);
+		} else if (ans.equals("2")) {
+			revokeAccess(scnr);
+		} else if (ans.equals("3")) {
+			System.out.println("Exiting program.");
+			ans = "-1";
+		} else {
+			System.out.println("Please select a valid option.\n");
+			ans = "-1";
+		}
 		return ans;
 	}
 

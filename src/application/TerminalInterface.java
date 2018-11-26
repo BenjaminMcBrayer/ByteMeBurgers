@@ -1,5 +1,15 @@
+package application;
+
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import menu.FoodItem;
+import payment.Employee;
+import utility.AdministratorUtility;
+import utility.EmployeeUtility;
+import utility.MenuUtility;
+import utility.PaymentUtility;
+import utility.Validator;
 
 /**
  * @authors allison.farr, anthony.reakoff, benjamin.mcbrayer, and mike.decoopman
@@ -10,10 +20,9 @@ public class TerminalInterface {
 	public static void main(String[] args) {
 		// Declare and initialize variables.
 		Scanner scnr = new Scanner(System.in);
-		ArrayList<Employee> empList = new ArrayList<>();
+		ArrayList<Employee> employeeList = new ArrayList<>();
 		ArrayList<FoodItem> cart = new ArrayList<>();
 		ArrayList<FoodItem> menu = new ArrayList<>();
-		Payment payment = null;
 		String ans = null;
 		int choice = 0;
 		int num = 0;
@@ -37,11 +46,11 @@ public class TerminalInterface {
 			}
 
 		} else if (ans.equalsIgnoreCase("manager")) { // Display management functions (ability to add/delete items).
-			empList = EmployeeUtility.readFromFileToArrayList();
+			employeeList = EmployeeUtility.readFromFileToArrayList();
 
 			do {
 				ans = Validator.getString(scnr, "Please verify ID number: ");
-				if (EmployeeUtility.validateUserID(ans, empList)) {
+				if (EmployeeUtility.validateUserID(ans, employeeList)) {
 					modifyMenu(scnr);
 					passTry = 0;
 					// TODO: Log out and restart program (instead of terminating program).
@@ -55,20 +64,20 @@ public class TerminalInterface {
 			do { // Take customer order.
 				menu = MenuUtility.generateCurrentMenu();
 				item = Validator.getInt(scnr, "Enter number of item would you like to order: ", 1, menu.size());
-				num = Validator.getInt(scnr, "How many orders?: ", 1, Integer.MAX_VALUE);
+				num = Validator.getInt(scnr, "How many orders? ", 1, Integer.MAX_VALUE);
 				ans = Validator.getString(scnr,
-						"You selected " + num + " " + menu.get(item - 1).getName() + "(s). Add item(s) to cart? y/n ");
+						"You selected " + num + " " + menu.get(item - 1).getName() + "(s). Add item(s) to cart? (y/n) ");
 				if (ans.equalsIgnoreCase("y")) {
 					MenuUtility.addItemToOrder(cart, menu, num, item);
 				}
-				ans = Validator.getString(scnr, "Would you like to order anything else? y/n: ");
+				ans = Validator.getString(scnr, "Would you like to order anything else? (y/n) ");
 			} while (ans.equalsIgnoreCase("y"));
 
 			// Display subtotal, calculate total, and request payment.
 			subtotal = PaymentUtility.displayBill(cart, subtotal);
 			total = PaymentUtility.calculateTotal(subtotal);
 			do {
-				choice = PaymentUtility.choosePaymentMethod(scnr, payment, total);
+				choice = PaymentUtility.choosePaymentMethod(scnr, total);
 			} while ((choice == 1 || choice == 2 || choice == 3) == false);
 			System.out.println(
 					"Thank you for your payment! Your order has been sent to the kitchen. Your name will be called shortly. Have a great day!");
@@ -127,7 +136,7 @@ public class TerminalInterface {
 			ans = Validator.getString(scnr, "Which item would you like to delete? ");
 			EmployeeUtility.deleteItemFromMenu(ans);
 			System.out.println("Updated menu:");
-			MenuUtility.printFoodItems();
+			MenuUtility.printItems("CompanyInfo/Menu");
 			ans = Validator.getString(scnr, "Would you like to delete another item? y/n: ");
 		} while (ans.equalsIgnoreCase("y"));
 		return ans;
@@ -143,9 +152,8 @@ public class TerminalInterface {
 			displayMenu();
 			FoodItem f = createMenuItem(scnr);
 			EmployeeUtility.addItemToMenu(f);
-			System.out.println("\nUpdated menu:");
-			MenuUtility.printFoodItems();
-			System.out.println();
+			System.out.println("\nUpdated menu:\n");
+			MenuUtility.printItems("CompanyInfo/Menu");
 			ans = Validator.getString(scnr, "Would you like to add another item? y/n: ");
 		} while (ans.equalsIgnoreCase("y"));
 		return ans;
@@ -171,7 +179,7 @@ public class TerminalInterface {
 	private static void displayMenu() {
 		System.out.println("Current menu:");
 		System.out.println("=============");
-		MenuUtility.printFoodItems();
+		MenuUtility.printItems("CompanyInfo/Menu");
 		System.out.println();
 	}
 }

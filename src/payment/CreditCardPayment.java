@@ -1,5 +1,8 @@
+package payment;
 import java.time.LocalDate;
 import java.util.Scanner;
+
+import utility.Validator;
 
 /**
  * @author allison.farr; edited by benjamin.mcbrayer

@@ -1,3 +1,4 @@
+package utility;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import menu.FoodItem;
+import payment.Employee;
 
 /**
  * @author benjamin.mcbrayer
@@ -60,7 +64,6 @@ public class EmployeeUtility {
 		}
 	}
 
-	// Add food item.
 	public static void addItemToMenu(FoodItem newfoodItem) {
 
 		Path writeFile = Paths.get("CompanyInfo/Menu");
@@ -69,14 +72,13 @@ public class EmployeeUtility {
 		try {
 			PrintWriter outW = new PrintWriter(new FileOutputStream(file, true));
 			outW.println(newfoodItem);
-			outW.close(); // flushes data closes the stream
+			outW.close();
 
 		} catch (FileNotFoundException e) {
 			System.out.println("The file was not found here...");
 		}
 	}
 
-	// Delete food item.
 	public static void deleteItemFromMenu(String itemToRemove) {
 		Path removeItemFromList = Paths.get("CompanyInfo/Menu");
 		File file = removeItemFromList.toFile();
@@ -99,13 +101,11 @@ public class EmployeeUtility {
 			pw.close();
 			br.close();
 
-			// Delete original file.
 			if (!file.delete()) {
 				System.out.println("Could not delete file.");
 				return;
 			}
 
-			// Rename new file.
 			if (!tempFile.renameTo(file)) {
 				System.out.println("Could not rename ");
 			}
@@ -115,7 +115,6 @@ public class EmployeeUtility {
 		}
 	}
 
-	// Print out a list of employees.
 	public static void printEmployeeList() {
 		ArrayList<Employee> employees = readFromFileToArrayList();
 		int i = 0;

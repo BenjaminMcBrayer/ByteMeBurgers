@@ -1,3 +1,4 @@
+package menu;
 
 public enum Category {
 	

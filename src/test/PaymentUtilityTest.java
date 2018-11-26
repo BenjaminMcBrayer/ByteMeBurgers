@@ -1,3 +1,4 @@
+package test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import menu.FoodItem;
+import utility.PaymentUtility;
 
 class PaymentUtilityTest {
 

@@ -1,8 +1,13 @@
+package payment;
+
 import java.util.Scanner;
+
+import menu.FoodItem;
+import utility.Validator;
 
 public class CashPayment extends Payment {
 
-	private Scanner scnr;
+	private static Scanner scnr;
 
 	public CashPayment() {
 		scnr = new Scanner(System.in);
@@ -14,14 +19,12 @@ public class CashPayment extends Payment {
 
 	@Override
 	public boolean acceptPayment() {
-		CashPayment cashPayment = new CashPayment();
-		cashPayment.setAmount(Validator.getDouble(cashPayment.scnr,
-				"Please enter cash amount (in the format 000.00): $", 0.01, 999.99));
-		if (getDecimalLength(cashPayment.getAmount()) > 2) {
+		setAmount(Validator.getDouble(CashPayment.scnr,
+				"Please enter cash amount: $", 0.01, 999.99));
+		if (getDecimalLength(getAmount()) > 2) {
 			System.out.println("The amount you entered is not valid. Please try again.");
 			return false;
 		} else {
-			//if (countCash() == )
 			return true;
 		}
 	}
@@ -32,25 +35,28 @@ public class CashPayment extends Payment {
 		return decimalLength;
 	}
 
-	public boolean countCash(Double total, Double cash, Payment payment) {
+	public static boolean countCash(Double total, Payment cashPayment, int choice) {
+		Double cash = cashPayment.getAmount();
 		if (total > cash) {
 			total -= cash;
 			System.out.println("You still owe " + total + ". How would you like to pay for the remainder?");
-			PaymentUtility.choosePaymentMethod(scnr, payment, total);
+			//PaymentUtility.choosePaymentMethod(scnr, payment, total);
 			return false;
 		} else if (total < cash) {
 			System.out.println("Thank you! Your change is $" + getChange(cash, total));
+			choice = 0;
 			return true;
 		} else {
 			System.out.println("Perfect change!");
+			choice = 0;
 			return true;
 		}
 	}
 
-	public Double getChange(Double cash, Double total) {
+	public static Double getChange(Double cash, Double total) {
 		Double change = 0.0;
-		change = total - cash;
-		formatAmount(change);
+		change = Math.abs(total - cash);
+		change = Double.parseDouble(FoodItem.formatNumber(change));
 		return change;
 	}
 }

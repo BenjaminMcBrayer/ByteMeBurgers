@@ -1,10 +1,13 @@
-import java.text.DecimalFormat;
+package payment;
+
+import menu.FoodItem;
 
 public abstract class Payment {
 
 	private Double amount;
 
 	public Payment() {
+		amount = 0.00;
 	}
 
 	public Payment(Double amount) {
@@ -21,14 +24,12 @@ public abstract class Payment {
 
 	public abstract boolean acceptPayment();
 
-	public static String formatAmount(Double amount) {
-		DecimalFormat format = new DecimalFormat("###.00");
-		String numberAsString = format.format(amount);
-		return numberAsString;	
+	public String getFormattedAmount() {
+		return FoodItem.formatNumber(getAmount());
 	}
 
 	@Override
 	public String toString() {
-		return "Please pay $" + formatAmount(amount);
+		return "Please pay $" + this.getFormattedAmount();
 	}
 }

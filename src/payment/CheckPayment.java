@@ -1,4 +1,7 @@
+package payment;
 import java.util.Scanner;
+
+import utility.Validator;
 
 /**
  * @author allison.farr; edited by benjamin.mcbrayer

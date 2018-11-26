@@ -1,18 +1,37 @@
+package menu;
+
 /**
- * @author mike.decoopman
+ * @author mike.decoopman; edited by benjamin.mcbrayer
+ *
+ */
+/**
+ * @author benja
+ *
+ */
+/**
+ * @author benja
  *
  */
 public class FoodItem {
 
+	private Long id;
 	private String name;
 	private String category;
 	private String description;
-	private double price;
+	private Double price;
 
 	public FoodItem() {
 	}
+	
+	public FoodItem(Long id, String name, String category, String description, Double price) {
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.description = description;
+		this.price = price;
+	}
 
-	public FoodItem(String name, String category, String description, double price) {
+	public FoodItem(String name, String category, String description, Double price) {
 		this.name = name;
 		this.category = category;
 		this.description = description;
@@ -96,5 +115,13 @@ public class FoodItem {
 	@Override
 	public String toString() {
 		return name + "\t" + category + "\t" + description + "\t" + price;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
